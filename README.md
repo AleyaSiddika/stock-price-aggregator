@@ -106,20 +106,28 @@ This is an backend system for real-time stock data aggregation from Alpha Vantag
 
     ```bash
     cd stock-price-aggregator
-    docker-compose up --build
+    docker compose up --build
     ```
+    
 
 3. **Run Migrations:**
 
     Open a new terminal window, navigate to the project root, and run:
 
     ```bash
-    docker-compose exec app php artisan migrate
+    docker compose exec stock-price-aggregator php artisan migrate
     ```
 
-4. **Access the Application:**
+4. **Update the permission if needed:**
 
-    The application will be accessible at [http://localhost:8000](http://localhost:8000).
+    ```bash
+    docker exec -it stock-price-aggregator chmod -R 777 /var/www/storage
+    ```
+    
+
+5. **Access the Application:**
+
+    The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
 ## Running Scheduled Commands
 
