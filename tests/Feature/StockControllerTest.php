@@ -17,7 +17,7 @@ class StockControllerTest extends TestCase
         Cache::flush();
 
         // Act: Hit the controller endpoint
-        $response = $this->get('/stocks/price/real-time');
+        $response = $this->get('/api/stocks/price/real-time');
 
         // Assert: Check HTTP response status
         $response->assertStatus(200);
