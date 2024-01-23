@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockPriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +18,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::prefix('stocks')->group(function () {
+    Route::get('/', [StockController::class, 'index']);
+    Route::get('/data', [StockController::class, 'fetchStockData']);
+
+    Route::prefix('price')->group(function () {
+        Route::get('/latest', [StockPriceController::class, 'getAllLatestStockPricesFromCache']);
+        Route::get('/real-time', [StockPriceController::class, 'getRealTimeStockPricesWithPercentageChange']);
+    });
 });

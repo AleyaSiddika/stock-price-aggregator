@@ -22,6 +22,16 @@ This is an backend system for real-time stock data aggregation from Alpha Vantag
     - [Prerequisites](#prerequisites-1)
     - [Setup Steps](#setup-steps-1)
   - [Running Scheduled Commands](#running-scheduled-commands)
+- [API Documentation](#api-documentation)
+  - [Stock Price Endpoints](#stock-price-endpoints)
+    - [Get Real-time Stock Prices with Percentage Change As Real-time Reporting](#get-real-time-stock-prices-with-percentage-change-as-real-time-reporting)
+      - [Endpoint](#endpoint)
+      - [Description](#description)
+      - [Response](#response)
+    - [Get All Latest Stock Prices from Cache](#get-all-latest-stock-prices-from-cache)
+      - [Endpoint](#endpoint-1)
+      - [Description](#description-1)
+      - [Response](#response-1)
 
 # Project Setup and Running Instructions
 
@@ -128,3 +138,71 @@ docker-compose exec app php artisan schedule:run
 This will execute the scheduled commands defined in the Laravel scheduler.
 
 Now, you have successfully set up and run the Laravel application manually and in a Dockerized environment.
+
+# API Documentation
+
+## Stock Price Endpoints
+
+### Get Real-time Stock Prices with Percentage Change As Real-time Reporting
+
+#### Endpoint
+
+```
+GET /stocks/price/real-time
+```
+
+#### Description
+
+Returns real-time stock prices with percentage change for all available stocks.
+
+#### Response
+
+```json
+{
+    "AAPL": {
+        "current_price": "150.25",
+        "percentage_change": "0.23",
+        "open_price": "149.50",
+        "high_price": "151.75",
+        "low_price": "148.60",
+        "volume": "1234567",
+        "latest_trading_day": "2024-01-22",
+        "previous_close": "149.90",
+        "change_amount": "0.35"
+    }
+    // Other available stocks...
+}
+```
+
+### Get All Latest Stock Prices from Cache
+
+#### Endpoint
+
+```
+GET /stocks/price/latest
+```
+
+#### Description
+
+Returns the latest stock prices for all available stocks from the cache.
+
+#### Response
+
+```json
+{
+    "AAPL": {
+        "Global Quote": {
+            "05. price": "150.25",
+            "02. open": "149.50",
+            "03. high": "151.75",
+            "04. low": "148.60",
+            "06. volume": "1234567",
+            "07. latest trading day": "2024-01-22",
+            "08. previous close": "149.90",
+            "09. change": "0.35"
+        }
+        // Additional stocks...
+    }
+    // Other available stocks...
+}
+```
