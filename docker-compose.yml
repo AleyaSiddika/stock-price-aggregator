@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+    stock_price_app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: stock-price-aggregator
+        container_name: stock-price-aggregator
+        restart: unless-stopped
+        volumes:
+            - .:/var/www/html
+        networks:
+            - stock_price_aggregator
+        depends_on:
+            - stock_price_db
+
+    stock_price_db:
+        image: mysql:8.0
+        container_name: mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - ./storage/dbdata:/docker-entrypoint-initdb.d
+        networks:
+            - stock_price_aggregator
+
+networks:
+    stock_price_aggregator:
