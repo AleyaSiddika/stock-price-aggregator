@@ -16,8 +16,15 @@ class FetchStockData extends Command
 
     protected $description = 'Fetch stock data from Alpha Vantage';
 
-    private $apiKey = '4R6YMFQ12FWS8OV7';
     private $stocks = ['AAPL', 'GOOGL', 'MSFT', 'AMZN',  'TSLA', 'NVDA', 'PYPL', 'NFLX', 'INTC', 'CSCO', 'IBM'];
+
+    private $apiKey;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->apiKey = env('ALPHA_VANTAGE_API_KEY', '');
+    }
 
     public function handle()
     {
