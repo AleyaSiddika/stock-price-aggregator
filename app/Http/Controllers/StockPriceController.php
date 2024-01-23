@@ -12,7 +12,6 @@ class StockPriceController extends Controller
     public function getAllLatestStockPricesFromCache()
     {
         $allSymbols = Stock::pluck('symbol')->toArray();
-
         $allData = [];
 
         foreach ($allSymbols as $symbol) {
@@ -29,20 +28,26 @@ class StockPriceController extends Controller
 
     public function getRealTimeStockPricesWithPercentageChange()
     {
-        // Assuming you have the symbols stored in the database
-        $symbols = Stock::pluck('symbol')->toArray();
+        $stocks = Stock::all();
 
         $stockData = [];
 
-        foreach ($symbols as $symbol) {
-            $cacheKey = "stock_price_{$symbol}";
+        foreach ($stocks as $stock) {
+            $cacheKey = "stock_price_{$stock->symbol}";
             $cachedData = Cache::get($cacheKey);
 
             if ($cachedData) {
                 $currentPrice = $cachedData['Global Quote']['05. price'];
+                $openPrice = $cachedData['Global Quote']['02. open'];
+                $highPrice = $cachedData['Global Quote']['03. high'];
+                $lowPrice = $cachedData['Global Quote']['04. low'];
+                $volume = $cachedData['Global Quote']['06. volume'];
+                $latestTradingDay = $cachedData['Global Quote']['07. latest trading day'];
+                $previousClose = $cachedData['Global Quote']['08. previous close'];
+                $changeAmount = $cachedData['Global Quote']['09. change'];
 
                 // Retrieve the previous price from the database
-                $previousPrice = StockPrice::where('symbol', $symbol)
+                $previousPrice = StockPrice::where('stock_id', $stock->id)
                     ->orderBy('created_at', 'desc')
                     ->value('current_price');
 
@@ -50,9 +55,16 @@ class StockPriceController extends Controller
                 $percentageChange = ($currentPrice - $previousPrice) / $previousPrice * 100;
 
                 // Add data to the result array
-                $stockData[$symbol] = [
+                $stockData[$stock->symbol] = [
                     'current_price' => $currentPrice,
                     'percentage_change' => $percentageChange,
+                    'open_price' => $openPrice,
+                    'high_price' => $highPrice,
+                    'low_price' => $lowPrice,
+                    'volume' => $volume,
+                    'latest_trading_day' => $latestTradingDay,
+                    'previous_close' => $previousClose,
+                    'change_amount' => $changeAmount,
                 ];
             }
         }

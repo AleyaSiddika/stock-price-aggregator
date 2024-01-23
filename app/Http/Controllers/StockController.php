@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 class StockController extends Controller
 {
     private $apiKey = '4R6YMFQ12FWS8OV7';
-    private $stocks = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'FB', 'TSLA', 'NVDA', 'PYPL', 'NFLX', 'INTC', 'CSCO', 'IBM'];
+    private $stocks = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'NVDA', 'PYPL', 'NFLX', 'INTC', 'CSCO', 'IBM'];
 
     public function index()
     {
@@ -22,7 +22,7 @@ class StockController extends Controller
     {
         foreach ($this->stocks as $stock) {
             $url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={$stock}&apikey={$this->apiKey}";
-            $response[] = Http::get($url);
+            $response[] = Http::get($url)->json();
         }
 
         return response()->json([
