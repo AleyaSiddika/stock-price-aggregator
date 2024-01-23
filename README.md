@@ -115,7 +115,7 @@ This is an backend system for real-time stock data aggregation from Alpha Vantag
     Open a new terminal window, navigate to the project root, and run:
 
     ```bash
-    docker compose exec stock-price-aggregator php artisan migrate
+    docker exec stock-price-aggregator php artisan migrate
     ```
 
 4. **Update the permission if needed:**
@@ -140,7 +140,7 @@ php artisan schedule:run
 For the Dockerized version, use the following command:
 
 ```bash
-docker-compose exec app php artisan schedule:run
+docker exec stock-price-aggregator php artisan schedule:work
 ```
 
 This will execute the scheduled commands defined in the Laravel scheduler.
